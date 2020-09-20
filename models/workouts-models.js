@@ -20,7 +20,9 @@ function fetchById(id) {
 
 function fetchExercises(exercise) {
   return db("workouts")
-    .select("*").from("workouts").where(knex.raw('description SIMILAR to ?', [exercise]))
+    .select("*")
+    .from("workouts")
+    .where("description", "like", `%${exercise}%`)
 }
 
 function addWorkout(workout) {
