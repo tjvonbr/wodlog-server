@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const workouts = require('../models/workouts-models');
+const validateWorkout = require("../middleware/validateWorkout");
 
 // Fetch all workouts
 router.get("/", (req, res) => {
@@ -31,14 +32,29 @@ router.get('/:exercise', (req, res) => {
 router.post("/", (req, res) => {
   const workout = req.body;
 
+  function alterDate(date) {
+    const _date = date.replace("-", "/")
+    const finalDate = _date.split("")
+
+    console.log(finalDate[0])
+    return finalDate[0]
+  }
+
   workouts.addWorkout(workout)
     .then(savedWorkout => {
-      res.status(201).json(savedWorkout)
+      res.status(201).json({
+        id: savedWorkout.id,
+        created_at: savedWorkout.postDate,
+        type: savedWorkout.type,
+        description: savedWorkout.description,
+        notes: savedWorkout.notes
+      })
     })
     .catch(error => {
-      console.log(error);
+      res.status(500).json({
+        message: "Sorry, but we weren't able to add your workout!"
+      })
     })
 })
-
 
 module.exports = router;

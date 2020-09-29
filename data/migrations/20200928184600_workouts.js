@@ -5,7 +5,8 @@ exports.up = function(knex) {
       table
         .increments()
       table
-        .timestamps(true, true)
+        .datetime("postDate")
+        .defaultTo(new Date().toLocaleDateString())
       table
         .string("type")
         .notNullable()
