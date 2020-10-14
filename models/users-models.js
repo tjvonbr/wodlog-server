@@ -13,7 +13,8 @@ function find() {
 
 function findBy(filter) {
   return db("users")
-    .where( { filter })
+    .where({ username: filter })
+    .orWhere({ email: filter })
     .first()
 }
 
